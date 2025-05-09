@@ -4,12 +4,12 @@ import random
 pygame.init() 
 
 ancho = 400
-altura = 600
+altura = 1000
 ventana = pygame.display.set_mode((ancho, altura))
 
 pygame.display.set_caption('Dance Dance Qabralution (BETA)')
 fps = pygame.time.Clock()
-fps.tick(60)                                            
+fps.tick(240)                                            
 negro = (0,0,0)
 blanco = (255,255,255)
 gris = (200,200,200)
@@ -25,9 +25,18 @@ imagenFlecha = {
 #lista vacia para las flechas
 flechas = []                                            
 def flechaAparece ():                                   #variable para hacer aparecer las flechas
-    direccion = random.choice(["arriba","abajo","izquierda","derecha"]) 
-    posicionX = {"arriba" :125,"abajo":225,"izquierda":25,"derecha":325}[direccion] 
-    flechas.append({"dir": direccion, "x" : posicionX, "y" : altura}) 
+    direccion = random.choice(["arriba","abajo","izquierda","derecha","dobleUpLeft","quadruple"]) 
+    posicionX = {"arriba" :125,"abajo":225,"izquierda":25,"derecha":325,"dobleUpLeft":125,"quadruple":25}[direccion]
+    if (direccion == "dobleUpLeft"):
+        flechas.append({"dir": "arriba", "x" : posicionX, "y" : altura}) 
+        flechas.append({"dir": "izquierda", "x" : posicionX - 100, "y" : altura})
+    elif (direccion == "quadruple"):
+        flechas.append({"dir": "izquierda", "x" : posicionX, "y" : altura}) 
+        flechas.append({"dir": "arriba", "x" : posicionX + 100, "y" : altura})
+        flechas.append({"dir": "abajo", "x" : posicionX + 200, "y" : altura})
+        flechas.append({"dir": "derecha", "x" : posicionX + 300, "y" : altura})
+    else: 
+        flechas.append({"dir": direccion, "x" : posicionX, "y" : altura}) 
 
 jugando = True
 puntaje = 0
@@ -42,7 +51,7 @@ while jugando:
             jugando = False
 #intervalo entre flechas
     tiempoDeSpawn += fps.get_time()
-    if tiempoDeSpawn > 500:
+    if tiempoDeSpawn > 300:
         flechaAparece()
         tiempoDeSpawn = 0
 
